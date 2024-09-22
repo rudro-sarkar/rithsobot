@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIHTSO Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="profile-section">
+            <img src="staff_logo.png" alt="Staff Profile Picture" class="profile-pic">
+            <span class="username">Helpline Agent - <%=adminUser%></span>
+        </div>
+        <button class="logout-btn"><a href="/deleteusersession">Log Out</a></button>
+    </nav>
+
+    <div class="container">
+
+        <% general_data_obj.authorAccounts.forEach( account=> {%>
+            <div class="user-box">
+                <img src="<%=account.author_avatar%>" alt="User Profile" class="user-pic">
+                <span class="user-name">
+                    <%=account.author_username%>
+                </span>
+                <% if (account.is_handled) {%>
+                    <button class="handled-btn" type="submit"><a href="/assist/<%=account.author_id%>"><%=account.handler%></a></button>
+                <% } else { %>
+                    <form action="/redirecting_to_conversation/<%=account.author_id%>" method="post">
+                        <button class="interact-btn" type="submit">Interact</button>
+                    </form>
+                <% } %>
+            </div>
+            <% }); %>
+
+    </div>
+
+    <script>
+
+    </script>
+
+</body>
+
+</html>

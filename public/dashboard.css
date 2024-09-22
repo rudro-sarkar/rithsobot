@@ -1,0 +1,162 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #ffffff
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-size: 16px;
+    color: #333;
+}
+
+.user-name {
+    font-size: 16px;
+    color: #333;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #ffffff;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.user-box input {
+    display: none;
+}
+
+.user-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.interact-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.handled-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #16161d;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.interact-btn a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.handled-btn a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.interact-btn:hover {
+    background-color: #2980b9;
+}
+
+.handled-btn:hover {
+    background-color: #292a2b;
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-section {
+        margin-bottom: 10px;
+    }
+
+    .logout-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .user-box {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .interact-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Section</title>
+    <link rel="stylesheet" href="/chat.css">
+</head>
+
+<body>
+    <nav class="chat-nav">
+        <div class="profile-info">
+            <img src="<%= authordata.author_avatar %>" alt="Profile Picture" class="profile-pic">
+            <span class="username">
+                <%= authordata.author_username %>
+            </span>
+        </div>
+        <button class="end-chat-btn" id="end-chat-btn">Close Chat & End Session</button>
+    </nav>
+
+    <div class="chat-container" id="chat-container">
+
+        <% contentArr.forEach(content=> { %>
+            <% if (content.sender_id==authordata.author_username) { %>
+                <div class="message other">
+                    <p>
+                        <%=content.content%>
+                    </p>
+                </div>
+                <% } else if(content.sender_id==admin) {%>
+                    <div class="message client">
+                        <p>
+                            <%=content.content%>
+                        </p>
+                    </div>
+                    <% } %>
+                        <% }) %>
+
+    </div>
+
+
+    <div class="input-container">
+        <input type="text" class="message-input" id="msg_input" placeholder="Type your message here..." required>
+        <button class="send-btn" id="msg_send">Send</button>
+    </div>
+
+    <form style="display: none;" id="deleteSupportSessionForm" action="/deletesupportsession" method="post">
+        <input type="text" value="<%=authordata.author_username%>" name="authorUsername">
+        <input type="text" value="<%=admin%>" name="adminUsername">
+        <input type="text" value="<%=authordata.author_id%>" name="authorId">
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        const socket = io();
+
+        const chat_container = document.getElementById("chat-container");
+
+        socket.on('new_msg', data => {
+            const div = document.createElement('div');
+            const p = document.createElement('p');
+
+            p.innerText = data.content;
+
+            const receiver_id = data.receiver_id;
+
+            if (receiver_id == "<%=admin%>") {
+                div.appendChild(p);
+                div.classList.add('message', 'client');
+
+                chat_container.appendChild(div);
+            }
+
+        });
+
+        socket.on('author_msg', data => {
+            const content = data.content;
+            const receiver = data.receiver;
+
+            if (receiver == "<%=authordata.handler%>") {
+                const div = document.createElement('div');
+                const p = document.createElement('p');
+
+                p.innerText = content;
+
+                div.appendChild(p);
+                div.classList.add('message', 'other');
+
+                chat_container.appendChild(div);
+            } else {
+                return;
+            }
+        });
+
+        const msg_input = document.getElementById("msg_input");
+        const msg_send = document.getElementById("msg_send");
+
+        msg_send.addEventListener('click', e => {
+            let msg = msg_input.value;
+            let trimmed_msg = msg.trim();
+            if (trimmed_msg) {
+                e.preventDefault();
+                socket.emit('msg_from_client', { sender: "<%=admin%>", content: trimmed_msg, authorId: "<%=authordata.author_id%>" });
+                msg_input.value = "";
+            }
+        });
+
+        socket.on('append_client_message', data => {
+            const div = document.createElement('div');
+            const p = document.createElement('p');
+
+            p.innerText = data.content;
+
+            div.appendChild(p);
+            div.classList.add('message', 'client');
+            chat_container.appendChild(div);
+        });
+
+        const end_chat_btn = document.getElementById("end-chat-btn");
+
+        const deleteSupportSessionForm = document.getElementById("deleteSupportSessionForm");
+
+        end_chat_btn.addEventListener('click', e => {
+            e.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, End Session!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Ending.....Please Wait",
+                        text: "Redirecting to homepage......",
+                        icon: "success"
+                    });
+                    setTimeout(() => {
+                        deleteSupportSessionForm.submit();
+                    },100);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
