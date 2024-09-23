@@ -115,6 +115,21 @@ body {
     background-color: #2980b9;
 }
 
+.emoji-btn {
+    padding: 10px;
+    background-color: #242321;
+    border: none;
+    border-radius: 6px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.emoji-btn:hover {
+    background-color: #3e4044;
+}
+
 
 @media (max-width: 600px) {
     .profile-pic {
