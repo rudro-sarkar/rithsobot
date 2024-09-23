@@ -57,11 +57,11 @@ client.on('messageCreate', async data => {
                 }]);
                 io.emit('author_msg', { content: author_message, receiver: db_data.handler });
             } else {
-                try {    
-                    client.users.send(author_id, `Please wait patiently. A staff member will assist you shortly. You'll be notified once your request is accepted.`);
-                } catch (error) {
-                    io.emit('author_msg', { content: 'Messege form <h2>server:</h2>: Cant send message. Possible reason: the user has blocked the bot.', receiver: db_data.handler });
-                }
+                client.users.send(author_id, `Please wait patiently. A staff member will assist you shortly. You'll be notified once your request is accepted.`).then(() => {
+                    return;
+                }).catch(err => {
+                    io.emit('author_msg', { content: 'Messege form server: Cant send message. Possible reason: the user has blocked the bot.', receiver: db_data.handler });
+                })
             }
         } else {
             client.users.send(author_id, 'Please wait.....');
@@ -72,12 +72,12 @@ client.on('messageCreate', async data => {
                 handler: 'none',
                 is_handled: false
             }]);
-            try {
-                client.users.send(author_id, 'Your request for assistance has been received. Please wait while we connect you with a staff member.');
+            client.users.send(author_id, 'Your request for assistance has been received. Please wait while we connect you with a staff member.').then(() => {
                 client.channels.cache.get('1287345364441239645').send(`${client.guilds.cache.get('1251071702230630410').roles.cache.get('1287157224782958725')} a user named **${author_username}** requested for helpline support!`);
-            } catch (error) {
-                io.emit('author_msg', { content: `Messege form <h2>server:</h2>: Internal error: ${error}`, receiver: db_data.handler });
-            }
+            }).catch(err => {
+                // io.emit('author_msg', { content: `Messege form <h2>server:</h2>: Internal error: ${error}`, receiver: db_data.handler });
+                console.log(err);
+            });
         }
     }
 });
@@ -95,11 +95,10 @@ mainRouter.post('/redirecting_to_conversation/:id', authChecker.isUserAuthentica
         io.on('connection', socket => {
             socket.emit('new_msg', { receiver_id: staff_username, content: `Hello ${account.author_username}, I am ${staff_username} from the OSTHIR Staff team. How can I assist you?` });
         });
-        try {   
-            client.users.send(account.author_id, `Hello ${account.author_username}, I am ${staff_username} from the OSTHIR Staff team. How can I assist you?`);
-        } catch (error) {
-            io.emit('author_msg', { content: 'Messege form <h2>server:</h2>: Cant send message. Possible reason: the user has blocked the bot.', receiver: db_data.handler });
-        }
+        client.users.send(account.author_id, `Hello ${account.author_username}, I am ${staff_username} from the OSTHIR Staff team. How can I assist you?`).then(() => {
+        }).catch(err => {
+            io.emit('author_msg', { content: 'Messege form <h2>server:</h2>: Cant send message. Possible reason: the user has blocked the bot.', receiver: staff_username });
+        })
     } else {
         res.redirect(`/assist/${chat_id}`);
     }
@@ -133,19 +132,19 @@ mainRouter.get('/assist/:id', authChecker.isUserAuthenticated, async (req, res) 
                         receiver_id: account.author_username,
                         content: data.content
                     }]);
-                    try {                 
-                        client.users.send(data.authorId, data.content);
+                    client.users.send(data.authorId, data.content).then(() => {
                         socket.emit('append_client_message', data);
-                    } catch (error) {
-                        io.emit('author_msg', { content: 'Messege form <h2>server:</h2>: Cant send message. Possible reason: the user has blocked the bot.', receiver: db_data.handler });
-                    }
+                    }).catch(err => {
+                        io.emit('author_msg', { content: 'Messege form server: Cant send message. Possible reason: the user has blocked the bot.', receiver: data.sender });
+                    });
+
                 });
             });
 
         } else {
             res.render('already_in_touch');
         }
-    }else {
+    } else {
         res.redirect('/');
     }
 });
@@ -159,12 +158,10 @@ mainRouter.post('/deletesupportsession', authChecker.isUserAuthenticated, (req, 
                 { sender_id: adminUsername, receiver_id: authorUsername }
             ]
         }).then(() => {
-            try {              
-                client.users.send(authorId, `The staff member has left, and the chat session is now over.`);
-                client.users.send(authorId, `Thank you for reaching out! We're always here to help if you need anything. Take care!`);
-            } catch (error) {
-                io.emit('author_msg', { content: 'Messege form <h2>server:</h2>: Cant send message. Possible reason: the user has blocked the bot.', receiver: db_data.handler });
-            }
+                client.users.send(authorId, `The staff member has left, and the chat session is now over. Thank you for reaching out! We're always here to help if you need anything. Take care!`).then(() => {
+                }).catch(err => {
+                    io.emit('author_msg', { content: `Messege form <h2>server:</h2>: Cant send message. Possible reason: ${err}`, receiver: adminUsername });
+                })
             res.redirect('/');
         }).catch(err => console.log(err));
     }).catch(err => {
