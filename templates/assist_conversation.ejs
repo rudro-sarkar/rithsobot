@@ -42,6 +42,7 @@
 
     <div class="input-container">
         <input type="text" class="message-input" id="msg_input" placeholder="Type your message..." required>
+        <button class="emoji-btn" id="emoji_btn" title="Presets">📙</button>
         <button class="send-btn" id="msg_send">Send</button>
     </div>
 
@@ -160,6 +161,54 @@
                     }, 100);
                 }
             });
+        });
+
+        const emoji_btn = document.getElementById("emoji_btn");
+
+        emoji_btn.addEventListener('click', async e => {
+            e.preventDefault();
+            const { value: fruit } = await Swal.fire({
+                title: "Select predefined message",
+                input: "select",
+                inputOptions: {
+                    Greetings: {
+                        welcome: "Good day sir, How can I help you?",
+                        bye: "Closing the chat sir. Have a great day. No need to reply to this message."
+                    },
+                    Concerns: {
+                        confinement: "We don't handle confinement appeals here. You can appeal a confinement from the server appeal section.",
+                        spam: "Please don't request for assitance without any reason! Doing it can lead you to getting blocked.",
+                        report: "Please provide me the username of the user whom you want to report."
+                    },
+                },
+                inputPlaceholder: "Select a predefined message",
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    return new Promise((resolve) => {
+                        if (value === "welcome") {
+                            resolve();
+                            msg_input.value = "Good day sir, How can I help you?"
+                        } else if (value === "bye") {
+                            resolve();
+                            msg_input.value = "Closing the chat sir. Have a great day. No need to reply to this message.";
+                        }else if (value === "confinement") {
+                            resolve();
+                            msg_input.value = "We don't handle confinement appeals here. You can appeal a confinement from the server appeal section.";
+                        }else if (value === "spam") {
+                            resolve();
+                            msg_input.value = "Please don't request for assitance without any reason! Doing it can lead you to getting blocked.";
+                        }else if (value === "report") {
+                            resolve();
+                            msg_input.value = "Please provide me the username of the user whom you want to report.";
+                        }else {
+                            resolve("Please select a predefined message or cancel!");
+                        }
+                    });
+                }
+            });
+            if (fruit) {
+                return;
+            }
         });
 
     </script>
