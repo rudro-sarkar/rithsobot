@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restriction Panel</title>
+    <link rel="stylesheet" href="/restriction.css">
+</head>
+
+<body>
+    <div class="restriction-box">
+        <h2>Unblock User</h2>
+        <form action="" method="post">
+            <input type="text" id="userIDInput" name="blockedUserId" placeholder="Enter User ID" required>
+            <p id="errorMsg" class="error-msg">Invalid code</p>
+            <button type="submit" id="unblockBtn">Unblock</button>
+        </form>
+    </div>
+
+    <p class="admin-info">Interacting as <%=adminUser%>
+    </p>
+    <% if (error=='' ) { %>
+    <% } else { %>
+        <p class="error-display"><%=error%></p>
+    <% } %>
+
+                <script>
+        // Add any necessary JavaScript if needed
+                </script>
+</body>
+
+</html>
