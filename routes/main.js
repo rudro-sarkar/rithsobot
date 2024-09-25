@@ -22,4 +22,6 @@ mainRouter.post('/redirecting_to_main', authChecker.isUserUnAuthenticated, mainC
 
 mainRouter.get('/deleteusersession',authChecker.isUserAuthenticated, mainController.removeUserSession);
 
+mainRouter.get('/restrictionpanel', authChecker.isUserAuthenticated, mainController.loadRestrictionPanel);
+
 module.exports = mainRouter;
