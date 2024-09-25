@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+    flex-direction: column;
+}
+
+.restriction-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.restriction-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.restriction-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.error-msg {
+    color: red;
+    display: none;
+}
+
+.restriction-box button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.restriction-box button:hover {
+    background-color: #2980b9;
+}
+
+.admin-info {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.error-display {
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgb(255, 0, 0);
+}
+
+@media (max-width: 600px) {
+    .restriction-box {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .restriction-box h2 {
+        font-size: 20px;
+    }
+
+    .restriction-box input {
+        font-size: 14px;
+    }
+
+    .restriction-box button {
+        font-size: 14px;
+    }
+}
