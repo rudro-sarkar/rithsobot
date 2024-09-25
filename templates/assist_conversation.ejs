@@ -42,6 +42,7 @@
 
     <div class="input-container">
         <input type="text" class="message-input" id="msg_input" placeholder="Type your message..." required>
+        <button class="block-btn" id="block_btn" title="Block User">🚫</button>
         <button class="emoji-btn" id="emoji_btn" title="Presets">📙</button>
         <button class="send-btn" id="msg_send">Send</button>
     </div>
@@ -49,6 +50,11 @@
     <form style="display: none;" id="deleteSupportSessionForm" action="/deletesupportsession" method="post">
         <input type="text" value="<%=authordata.author_username%>" name="authorUsername">
         <input type="text" value="<%=admin%>" name="adminUsername">
+        <input type="text" value="<%=authordata.author_id%>" name="authorId">
+    </form>
+
+    <form style="display: none;" id="blockUserForm" action="/blockinguser" method="post">
+        <input type="text" value="<%=authordata.author_username%>" name="authorUsername">
         <input type="text" value="<%=authordata.author_id%>" name="authorId">
     </form>
 
@@ -191,16 +197,16 @@
                         } else if (value === "bye") {
                             resolve();
                             msg_input.value = "Closing the chat sir. Have a great day. No need to reply to this message.";
-                        }else if (value === "confinement") {
+                        } else if (value === "confinement") {
                             resolve();
                             msg_input.value = "We don't handle confinement appeals here. You can appeal a confinement from the server appeal section.";
-                        }else if (value === "spam") {
+                        } else if (value === "spam") {
                             resolve();
                             msg_input.value = "Please don't request for assitance without any reason! Doing it can lead you to getting blocked.";
-                        }else if (value === "report") {
+                        } else if (value === "report") {
                             resolve();
                             msg_input.value = "Please provide me the username of the user whom you want to report.";
-                        }else {
+                        } else {
                             resolve("Please select a predefined message or cancel!");
                         }
                     });
@@ -209,6 +215,32 @@
             if (fruit) {
                 return;
             }
+        });
+
+        const block_btn = document.getElementById("block_btn");
+
+        const blockUserForm = document.getElementById("blockUserForm");
+
+        block_btn.addEventListener('click', e => {
+            e.preventDefault();
+            Swal.fire({
+                title: "Block <%=authordata.author_username %> ?",
+                text: "Blocking this user will prevent them from requesting assistance. They will remain blocked until manually unblocked from the dashboards restriction panel.",
+                icon: "error",
+                showCancelButton: true,
+                confirmButtonColor: "#ff0000",
+                cancelButtonColor: "#3f4042",
+                confirmButtonText: "Block!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Blocked!",
+                        text: "Redirecting to dashboard ...",
+                        icon: "warning"
+                    });
+                    blockUserForm.submit();
+                }
+            });
         });
 
     </script>
