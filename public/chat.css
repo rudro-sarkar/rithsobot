@@ -130,6 +130,21 @@ body {
     background-color: #3e4044;
 }
 
+.block-btn {
+    padding: 10px;
+    background-color: #c9c9c9;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.block-btn:hover {
+    background-color: #797575;
+}
 
 @media (max-width: 600px) {
     .profile-pic {
