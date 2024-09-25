@@ -42,9 +42,14 @@ async function removeUserSession(req, res) {
     res.redirect('auth');
 }
 
+async function loadRestrictionPanel(req, res) {
+    res.render('restriction_panel', { adminUser: req.session.userData.username, error: '' });
+}
+
 module.exports = {
     loadDashboard,
     loadAuthenticator,
     loadsession,
-    removeUserSession
+    removeUserSession,
+    loadRestrictionPanel
 }
